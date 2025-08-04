@@ -1,6 +1,5 @@
 package com.example.todoapp5.ui.theme
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun TodoScreen(viewModel: TodoViewModel) {
-    val todoList = viewModel.todoList.collectAsState().value
+    val todoList by viewModel.todoList.collectAsState()
 
     Column(Modifier.padding(16.dp)) {
         Spacer(Modifier.height(32.dp))
@@ -75,7 +74,9 @@ fun TodoScreen(viewModel: TodoViewModel) {
         LazyColumn {
             items(todoList) { item ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Checkbox(
