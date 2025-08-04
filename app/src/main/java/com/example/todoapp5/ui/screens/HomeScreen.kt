@@ -58,3 +58,26 @@ fun HomeScreen(
                 )
             }
         }
+        // İstatistik kartları
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            StatCard(
+                title = "Toplam Görev",
+                value = totalTasks.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                title = "Tamamlanan",
+                value = completedTasks.toString(),
+                modifier = Modifier.weight(1f)
+            )
+            StatCard(
+                title = "Kalan",
+                value = (totalTasks - completedTasks).toString(),
+                modifier = Modifier.weight(1f)
+            )
+        }
