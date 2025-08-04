@@ -84,7 +84,7 @@ fun BottomNavigationBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    
+
     val items = listOf(
         BottomNavItem("Ana Sayfa", Screen.Home.route, Icons.Filled.Home),
         BottomNavItem("Görevler", Screen.Tasks.route, Icons.Filled.List),
