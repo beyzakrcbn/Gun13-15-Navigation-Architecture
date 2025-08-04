@@ -147,5 +147,69 @@ fun TasksScreen(
                     }
                 )
             }
+            LazyColumn {
+                items(todoList) { item ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        onClick = {
+                            navController.navigate(Screen.TodoDetails.createRoute(item.id))
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = item.isDone,
+                                onCheckedChange = { viewModel.toggleTask(item) }
+                            )
+
+                            Column(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(start = 8.dp)
+                            ) {
+                                Text(
+                                    text = item.title,
+                                    style = TextStyle(
+                                        textDecoration = if (item.isDone) TextDecoration.LineThrough else TextDecoration.None,
+                                        fontWeight = FontWeight.Medium
+                                    )
+                                )
+                                if (item.description.isNotEmpty()) {
+                                    Text(
+                                        text = item.description,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                    )
+                                }
+                                if (item.date.isNotEmpty() || item.time.isNotEmpty()) {
+                                    Text(
+                                        text = "${item.date} ${item.time}".trim(),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+
+                            IconButton(onClick = { viewModel.removeTask(item) }) {
+                                Icon(
+                                    Icons.Default.Delete,
+                                    contentDescription = "Delete",
+                                    tint = Color.Red
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 
