@@ -81,3 +81,69 @@ fun HomeScreen(
                 modifier = Modifier.weight(1f)
             )
         }
+
+        // Son görevler
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Son Görevler",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            TextButton(
+                onClick = { navController.navigate(Screen.Tasks.route) }
+            ) {
+                Text("Tümünü Gör")
+            }
+        }
+
+        // Görev listesi (son 5 görev)
+        LazyColumn {
+            items(todoList.take(5)) { todo ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    onClick = {
+                        navController.navigate(Screen.TodoDetails.createRoute(todo.id))
+                    }
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Checkbox(
+                            checked = todo.isDone,
+                            onCheckedChange = { viewModel.toggleTask(todo) }
+                        )
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = 8.dp)
+                        ) {
+                            Text(
+                                text = todo.title,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            if (todo.date.isNotEmpty()) {
+                                Text(
+                                    text = todo.date,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
