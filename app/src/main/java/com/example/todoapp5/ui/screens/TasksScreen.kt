@@ -85,4 +85,67 @@ fun TasksScreen(
             ) {
                 Text("Detaylı Görev Ekle")
             }
+            // Detaylı ekleme dialog'u
+            if (showAddDialog) {
+                AlertDialog(
+                    onDismissRequest = { showAddDialog = false },
+                    title = { Text("Yeni Görev Ekle") },
+                    text = {
+                        Column {
+                            TextField(
+                                value = newTask,
+                                onValueChange = { newTask = it },
+                                label = { Text("Görev Başlığı") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp)
+                            )
+                            TextField(
+                                value = newDescription,
+                                onValueChange = { newDescription = it },
+                                label = { Text("Açıklama") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp)
+                            )
+                            TextField(
+                                value = newDate,
+                                onValueChange = { newDate = it },
+                                label = { Text("Tarih (ör: 15 Mart 2024)") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp)
+                            )
+                            TextField(
+                                value = newTime,
+                                onValueChange = { newTime = it },
+                                label = { Text("Saat (ör: 14:30)") },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                if (newTask.isNotBlank()) {
+                                    viewModel.addTask(newTask, newDescription, newDate, newTime)
+                                    newTask = ""
+                                    newDescription = ""
+                                    newDate = ""
+                                    newTime = ""
+                                    showAddDialog = false
+                                }
+                            }
+                        ) {
+                            Text("Ekle")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showAddDialog = false }) {
+                            Text("İptal")
+                        }
+                    }
+                )
+            }
+
 
