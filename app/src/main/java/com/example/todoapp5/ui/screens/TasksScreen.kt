@@ -41,3 +41,48 @@ fun TasksScreen(
         var newDate by remember { mutableStateOf("") }
         var newTime by remember { mutableStateOf("") }
         var showAddDialog by remember { mutableStateOf(false) }
+
+        // Hızlı ekleme butonu
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = newTask,
+                onValueChange = { newTask = it },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("Hızlı görev ekle...") }
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Button(
+                onClick = {
+                    if (newTask.isNotBlank()) {
+                        viewModel.addTask(newTask)
+                        newTask = ""
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Blue
+                ),
+                shape = RoundedCornerShape(50)
+            ) {
+                Text("Ekle", color = Color.White)
+            }
+
+            // Detaylı ekleme butonu
+            Button(
+                onClick = { showAddDialog = true },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text("Detaylı Görev Ekle")
+            }
+
