@@ -18,6 +18,17 @@ class TodoViewModel : ViewModel() {
     private val _todoList = MutableStateFlow<List<TodoItem>>(emptyList())
     val todoList: StateFlow<List<TodoItem>> = _todoList
 
+    private val _isDarkTheme = MutableStateFlow(false)
+    val isDarkTheme: StateFlow<Boolean> = _isDarkTheme
+
+    fun toggleTheme() {
+        _isDarkTheme.value = !_isDarkTheme.value
+    }
+
+    fun setTheme(isDark: Boolean) {
+        _isDarkTheme.value = isDark
+    } // Bu kapanış parantezi eksikti!
+
     // Basit görev ekleme (sadece başlık)
     fun addTask(title: String) {
         val currentList = _todoList.value.toMutableList()

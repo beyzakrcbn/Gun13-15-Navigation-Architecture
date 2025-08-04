@@ -15,12 +15,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.todoapp5.ui.theme.TodoViewModel // Bu import'u ekleyin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(
+    navController: NavController,
+    viewModel: TodoViewModel // ViewModel parametresi eklendi
+) {
     var notificationsEnabled by remember { mutableStateOf(true) }
-    var darkModeEnabled by remember { mutableStateOf(false) }
+
+    // ViewModel'den tema durumunu al
+    val darkModeEnabled by viewModel.isDarkTheme.collectAsState()
 
     Column(
         modifier = Modifier
@@ -59,14 +65,14 @@ fun SettingsScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Görünüm Ayarları
+        // Görünüm Ayarları - GÜNCELLENEN KISIM
         SettingsSection("Görünüm") {
             SettingsSwitchItem(
                 icon = Icons.Default.Palette,
                 title = "Karanlık Mod",
                 subtitle = "Gece modu aktif",
                 checked = darkModeEnabled,
-                onCheckedChange = { darkModeEnabled = it }
+                onCheckedChange = { viewModel.setTheme(it) } // ViewModel kullanarak tema değiştir
             )
         }
 
@@ -83,7 +89,6 @@ fun SettingsScreen(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
 
         Card(
             modifier = Modifier.fillMaxWidth(),

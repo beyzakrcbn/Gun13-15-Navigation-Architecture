@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,8 +35,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            TodoApp5Theme {
-                val viewModel: TodoViewModel = viewModel()
+            val viewModel: TodoViewModel = viewModel()
+
+            // Tema durumunu al
+            val isDarkTheme by viewModel.isDarkTheme.collectAsState()
+
+            // Tema wrapper'ı ekle
+            MaterialTheme(
+                colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()
+            ) {
                 TodoApp(viewModel = viewModel)
             }
         }
@@ -65,7 +73,8 @@ fun TodoApp(viewModel: TodoViewModel) {
                 TasksScreen(navController = navController, viewModel = viewModel)
             }
             composable(Screen.Settings.route) {
-                SettingsScreen(navController = navController)
+                // ViewModel'i SettingsScreen'e geç
+                SettingsScreen(navController = navController, viewModel = viewModel)
             }
             composable(Screen.TodoDetails.route) { backStackEntry ->
                 val todoId = backStackEntry.arguments?.getString("todoId") ?: ""
@@ -84,7 +93,6 @@ fun BottomNavigationBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-
     val items = listOf(
         BottomNavItem("Ana Sayfa", Screen.Home.route, Icons.Filled.Home),
         BottomNavItem("Görevler", Screen.Tasks.route, Icons.Filled.List),
@@ -99,15 +107,10 @@ fun BottomNavigationBar(navController: NavHostController) {
                 selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 onClick = {
                     navController.navigate(item.route) {
-
-
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
                         launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
                         restoreState = true
                     }
                 }
