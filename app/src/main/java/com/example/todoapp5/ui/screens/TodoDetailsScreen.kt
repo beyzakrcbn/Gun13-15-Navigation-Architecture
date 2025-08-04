@@ -233,22 +233,6 @@ fun TodoDetailsScreen(
                             .padding(bottom = 8.dp)
                     )
                     TextField(
-                        value = editDescription,
-                        onValueChange = { editDescription = it },
-                        label = { Text("Açıklama") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
-                    )
-                    TextField(
-                        value = editDate,
-                        onValueChange = { editDate = it },
-                        label = { Text("Tarih") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp)
-                    )
-                    TextField(
                         value = editTime,
                         onValueChange = { editTime = it },
                         label = { Text("Saat") },
